@@ -35,10 +35,21 @@
             @endif
 
             <div>
-                <h4>Hola, {{ Auth::user()-> name }}</h4>
-                @foreach($comentario as $comentarios)
-                    <h3>{{ $comentarios->texto }}</h3>
-                @endforeach
+                <div style="background-color: yellow;">    
+                    <h2>ADMIN | Ver todos los comentarios de todos los usuarios: </h2>
+                        @foreach($comentario as $comentarios)
+                        <h3>{{ $comentarios->texto }}</h3>
+                        <br>
+                        @endforeach
+                </div>
+                <div style="background-color: dimgrey;">
+                    <h2>Ver tus comentarios, {{ Auth::user()-> name }}: </h2>
+                        @foreach($comentariosFk as $comentario)
+                            <p>{{ $comentario->texto }}</p>
+                        @endforeach
+                </div>
+                <a href="{{ route('comentario.create')  }}"><button style="padding:1em; background-color:grey; border-radius: 3em; margin-top:1em;">
+                Agregar comentarios</button></a>
             </div>
 
         </div>

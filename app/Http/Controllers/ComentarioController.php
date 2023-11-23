@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comentario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ComentarioController extends Controller
 {
@@ -13,8 +14,9 @@ class ComentarioController extends Controller
     public function index()
     {
         $comentario = Comentario::all();
-        
-        return view("welcome", ["comentario"=> $comentario]);
+        $comentariosFk = Comentario::where('userId', Auth::user()->id)->get();
+
+        return view("welcome", ["comentario" => $comentario], ['comentariosFk' => $comentariosFk]);
     }
 
     /**
@@ -22,7 +24,7 @@ class ComentarioController extends Controller
      */
     public function create()
     {
-        //
+        return view("form");
     }
 
     /**
@@ -30,16 +32,26 @@ class ComentarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Crear un nuevo usuario en la base de datos
+        $comentario = new Comentario;
+        //Variable local ->CampoEnLaBBDD = Variable ->input("nombre del name del formulario")
+        $comentario->texto = $request->input('texto');
+        $comentario->userId = Auth::user()->id;
+        // Guardar el usuario
+        $comentario->save();
+
+        // Redireccionar a la página de inicio u otra vista después de guardar
+        return redirect('/');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Comentario $comentario)
+    public function show()
     {
-        //
+        
     }
+    
 
     /**
      * Show the form for editing the specified resource.
